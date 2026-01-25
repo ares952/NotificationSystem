@@ -56,9 +56,9 @@ def load_config() -> dict:
 if __name__ == "__main__":
     import sys
     config = load_config()
-    config = read_config("../etc/NotificationSystem.yaml.template", config)
     current_file = os.path.abspath(__file__)
     current_dir = os.path.dirname(current_file)
+    config = read_config(f"{current_dir}/../etc/NotificationSystem.yaml.template", config)
     config = read_config(f"{current_dir}/../etc/NotificationSystem.yaml", config)
     if (config is not None) and (len(config) > 0):
         print("Configuration loaded successfully:")
