@@ -57,7 +57,7 @@ if __name__ == "__main__":
     import sys
     config = load_config()
     config = read_config("../etc/NotificationSystem.yaml", config)
-    if (config is not None) and (len(config) >= 0):
+    if (config is not None) and (len(config) > 0):
         print("Configuration loaded successfully:")
         print(yaml.dump(config, sort_keys=False, allow_unicode=True, indent=4))
     else:
