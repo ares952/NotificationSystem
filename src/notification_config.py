@@ -1,7 +1,8 @@
 import yaml
 import os
 
-def merge_dicts(default, override):
+
+def merge_dicts(default, override) -> dict:
     """Recursively merge two dictionaries."""
     result = default.copy()
     for key, value in override.items():
@@ -11,10 +12,10 @@ def merge_dicts(default, override):
             result[key] = value
     return result
 
-def read_config(path, defaults=None):
+
+def read_config(path, defaults=None) -> dict:
     """
     Read YAML configuration and merge it with defaults.
-    
     :param path: Path to YAML file
     :param defaults: Optional dict with default configuration
     :return: Merged configuration dict
@@ -35,7 +36,8 @@ def read_config(path, defaults=None):
         print(f"Error parsing YAML file '{path}': {e}")
         return defaults
 
-def load_config():
+
+def load_config() -> dict:
     """
     Load configuration from various sources.
 
@@ -50,11 +52,18 @@ def load_config():
     config = read_config(f"{current_dir}/NotificationSystem.yaml", config)
     return config
 
+
 if __name__ == "__main__":
+    import sys
     config = load_config()
-    config = read_config("../etc/NotificationSystem.yaml", config)
-    if (config is not None) and (len(config) >= 0):
+    current_file = os.path.abspath(__file__)
+    current_dir = os.path.dirname(current_file)
+    config = read_config(f"{current_dir}/../etc/NotificationSystem.yaml.template", config)
+    config = read_config(f"{current_dir}/../etc/NotificationSystem.yaml", config)
+    if (config is not None) and (len(config) > 0):
         print("Configuration loaded successfully:")
         print(yaml.dump(config, sort_keys=False, allow_unicode=True, indent=4))
     else:
         print("Failed to load configuration.")
+        sys.exit(1)
+    sys.exit(0)
