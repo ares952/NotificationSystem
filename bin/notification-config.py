@@ -51,6 +51,7 @@ def load_config():
     return config
 
 if __name__ == "__main__":
+    import sys
     config = load_config()
     config = read_config("../etc/NotificationSystem.yaml", config)
     if (config is not None) and (len(config) >= 0):
@@ -58,3 +59,5 @@ if __name__ == "__main__":
         print(yaml.dump(config, sort_keys=False, allow_unicode=True, indent=4))
     else:
         print("Failed to load configuration.")
+        sys.exit(1)
+    sys.exit(0)
