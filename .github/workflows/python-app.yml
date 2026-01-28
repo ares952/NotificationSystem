@@ -39,7 +39,7 @@ jobs:
     - name: Wait for MariaDB
       run: |
         for i in {1..15}; do
-          mysql -h 127.0.0.1 -uroot -p$MYSQL_ROOT_PASSWORD -e "SELECT 1" notification && break
+          mysql -h 127.0.0.1 -uroot -proot -e "SELECT 1" notification && break
           echo "Waiting... ($i/15)"
           sleep 2
         done
