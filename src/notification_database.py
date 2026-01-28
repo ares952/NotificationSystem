@@ -34,7 +34,6 @@ class dbAccess:
     def open(self):
         # Connect to MariaDB Platform
         try:
-            print(self.config)
             self.connection = mysql.connect(
                 user=self.config['database']['username'],
                 password=self.config['database']['password'],
