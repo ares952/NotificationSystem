@@ -40,10 +40,9 @@ jobs:
       run: |
         timeout=180
         for i in $(seq 1 $((timeout/2))); do
-          if timeout 5 mariadb -h127.0.0.1 -P3306 -uroot -proot -e "SELECT 1" 2>/dev/null; then
+          if mariadb -hlocalhost -P3306 -uroot -proot -e "SELECT 1" 2>/dev/null; then
             echo "MariaDB ready!"
-            mariadb -h127.0.0.1 -P3306 -uroot -proot -e "SHOW DATABASES LIKE 'notification';"
-            mariadb -h127.0.0.1 -P3306 -uroot -proot -e "SELECT User, Host FROM mysql.user WHERE User='notification_user';"
+            mariadb -h127.0.0.1 -P3306 -uroot -proot -e "CREATE DATABASE 'notification';"
             break
           fi
           echo "Waiting... ($i/90)"

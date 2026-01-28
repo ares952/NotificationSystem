@@ -35,11 +35,11 @@ class dbAccess:
         # Connect to MariaDB Platform
         try:
             self.connection = mysql.connect(
-                user=config['database']['username'],
-                password=config['database']['password'],
-                host=config['database']['server'],
-                port=config['database']['port'],
-                database=config['database']['database'],
+                user=self.config['database']['username'],
+                password=self.config['database']['password'],
+                host=self.config['database']['server'],
+                port=self.config['database']['port'],
+                database=self.config['database']['database'],
                 collation='utf8mb4_unicode_ci'
             )
             self.cursor = self.connection.cursor()
