@@ -28,23 +28,27 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h localhost -uroot -proot"
+          --health-cmd "mariadb-admin --protocol=TCP ping -h localhost -uroot -proot"
           --health-interval=5s
           --health-timeout=2s
           --health-retries=10
+          --health-start-period 60s
 
     steps:
     - uses: actions/checkout@v4
-    - name: Wait for MariaDB
+    - name: Wait for MariaDB ready
       run: |
-        for i in {1..30}; do
-          if mysql -h 127.0.0.1 -uroot -proot -e "SELECT 1" >/dev/null 2>&1; then
-            echo "MariaDB is up"
+        timeout=180
+        for i in $(seq 1 $((timeout/2))); do
+          if timeout 5 mariadb -h127.0.0.1 -P3306 -uroot -proot -e "SELECT 1" 2>/dev/null; then
+            echo "MariaDB ready!"
+            mariadb -h127.0.0.1 -P3306 -uroot -proot -e "SHOW DATABASES LIKE 'notification';"
+            mariadb -h127.0.0.1 -P3306 -uroot -proot -e "SELECT User, Host FROM mysql.user WHERE User='notification_user';"
             break
           fi
-          echo "Waiting for MariaDB..."
+          echo "Waiting... ($i/90)"
           sleep 2
-        done
+        done || { echo "MariaDB not ready after $timeout s"; exit 1; }
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
