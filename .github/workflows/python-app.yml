@@ -39,9 +39,9 @@ jobs:
     - name: Wait for MariaDB
       run: |
         for i in {1..15}; do
-          echo `mysql -h localhost -uroot -proot -e "SELECT 1 notification"`
-          mysql -h localhost -uroot -proot -e "SELECT 1 notification"
-          mysql -h localhost -uroot -proot -e "SELECT 1" notification && break
+          echo `mysql -h 127.0.0.1 -uroot -proot -e "SELECT 1 notification"`
+          mysql -h 127.0.0.1 -uroot -proot -e "SELECT 1 notification"
+          mysql -h 127.0.0.1 -uroot -proot -e "SELECT 1" notification && break
           echo "Waiting... ($i/15)"
           sleep 2
         done
