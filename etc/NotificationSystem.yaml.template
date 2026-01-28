@@ -1,9 +1,10 @@
-config:
-    publishimmediately: true
+station:
+    publish_immediately: true
 
 server:
     enabled: false
     fetchinterval: 15
+    min_priority: 1
 
 ntfy:
     url: "https://ntfy.example.com"
