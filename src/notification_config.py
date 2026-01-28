@@ -30,7 +30,7 @@ def read_config(path, defaults=None) -> dict:
             print(f"'{path}' configuration was loaded.")
             return merged
     except FileNotFoundError:
-        print(f"Warning: File '{path}' not found. Using defaults.")
+        # print(f"Warning: File '{path}' not found. Using defaults.")
         return defaults
     except yaml.YAMLError as e:
         print(f"Error parsing YAML file '{path}': {e}")
