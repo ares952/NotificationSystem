@@ -1,5 +1,4 @@
 config:
-    station: "station-to-publish"
     publishimmediately: true
 
 server:
@@ -10,10 +9,9 @@ ntfy:
     url: "https://ntfy.example.com"
     username: "my-user-name"
     password: "my-password"
-    topic: "my-topic-to-publish"
 
 database:
-    server: "localhost"
+    server: "127.0.0.1"
     port: 3306
     database: "notification"
     username: "notification_user"

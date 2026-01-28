@@ -15,11 +15,34 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
+    services:
+      mariadb:
+        image: mariadb:latest
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: notification
+          MYSQL_USER: notification_user
+          MYSQL_PASSWORD: notification_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mariadb-admin --protocol=TCP ping -h localhost -uroot -p$MYSQL_ROOT_PASSWORD"
+          --health-interval=5s
+          --health-timeout=2s
+          --health-retries=10
+          --health-start-period 60s
 
     steps:
     - uses: actions/checkout@v4
+    - name: Wait for MariaDB
+      run: |
+        for i in {1..15}; do
+          mysql -h 127.0.0.1 -uroot -proot -e "SELECT 1" notification && break
+          echo "Waiting... ($i/15)"
+          sleep 1
+        done
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
@@ -37,4 +60,5 @@ jobs:
     - name: Test
       run: |
         python3 src/notification_config.py
+        python3 src/notification_database.py
         
