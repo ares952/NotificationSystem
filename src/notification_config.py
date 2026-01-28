@@ -46,7 +46,7 @@ def load_config() -> dict:
     current_file = os.path.abspath(__file__)
     current_dir = os.path.dirname(current_file)
     config = read_config(f"{current_dir}/../etc/NotificationSystem.yaml.template")
-    config = read_config("/etc/NotificationSystem.yaml")
+    config = read_config("/etc/NotificationSystem.yaml", config)
     config = read_config("/usr/local/etc/NotificationSystem.yaml", config)
     config = read_config("/opt/etc/NotificationSystem.yaml", config)
     config = read_config(f"{current_dir}/../etc/NotificationSystem.yaml", config)
