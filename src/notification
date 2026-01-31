@@ -1,0 +1,42 @@
+#!/bin/bash
+
+SCRIPT_PATH="$(cd -P -- "$(dirname -- "$0")" && pwd -P)/$(basename -- "$0")"
+
+# resolve symlink if exists
+while [[ -h "$SCRIPT_PATH" ]]; do
+    DIR="$(dirname -- "$SCRIPT_PATH")"
+    SYM="$(readlink "$SCRIPT_PATH")"
+    SCRIPT_PATH="$(cd "$DIR" && cd "$(dirname -- "$SYM")" && pwd)/$(basename -- "$SYM")"
+done
+
+SCRIPT_DIR="$(dirname -- "$SCRIPT_PATH")"
+EXEC_NAME="$(basename -- "$0")"
+TOPIC="${EXEC_NAME#notification-}"
+PYTHON_SCRIPT="$SCRIPT_DIR/notification.py"
+if [[ ! -f "$PYTHON_SCRIPT" ]]; then
+    echo "Error: Python script '$PYTHON_SCRIPT' does not exist!" >&2
+    exit 1
+fi
+
+HAS_TOPIC=false
+if [[ "$EXEC_NAME" =~ ^notification- ]]; then
+    HAS_TOPIC=true
+fi
+
+
+VENV_DIR="$SCRIPT_DIR/venv"
+if [[ -d "$VENV_DIR" && -f "$VENV_DIR/bin/activate" ]]; then
+    # execute in venv
+    if [[ "$HAS_TOPIC" == true ]]; then
+        "$VENV_DIR/bin/python" "$PYTHON_SCRIPT" "$@" "--topic=$TOPIC"
+    else
+        "$VENV_DIR/bin/python" "$PYTHON_SCRIPT" "$@"
+    fi
+else
+    # execute normally0
+    if [[ "$HAS_TOPIC" == true ]]; then
+        python3 "$PYTHON_SCRIPT" "$@" "--topic=$TOPIC"
+    else
+        python3 "$PYTHON_SCRIPT" "$@"
+    fi
+fi

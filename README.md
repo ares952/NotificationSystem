@@ -19,6 +19,15 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+## Links
+You can call ```notification``` script directly or over symlinked file with topic inside, e.g.:
+
+```notification``` -> ```notification-camera```
+
+When you call ```notification-camera```, the script will call python script with parameter ```--topic="camera"```
+
+If python virtual environment is installed in root of git repository, it will be used.
+
 
 ## Server
 On the server, you need to install and configure NTFY. You can add new user by running the following command:
