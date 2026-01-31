@@ -2,6 +2,7 @@
 import argparse
 import notification_config
 import notification_main
+import sys
 
 
 parser = argparse.ArgumentParser(description="Notification system")
@@ -16,7 +17,10 @@ args = parser.parse_args()
 topic = notification_main.attempt_to_get_topic()
 if topic is None:
     if args.topic is None:
-        raise argparse.ArgumentTypeError("Topic is not defined!")
+        parser.print_usage()
+        print("Topic is not defined!")
+        sys.exit(1)
+
     topic = args.topic
 
 config = notification_config.load_config()
