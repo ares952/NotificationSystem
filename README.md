@@ -49,10 +49,18 @@ The purpose of the server is to fetch notifications from the database and send t
 
 If the server station is enabled, it will attempt to create the database table and will collect data from the database each **fetchinterval** seconds and sent the request to notification server.
 
+The purpose of server station and the possibility to report notifications to the server is the reliability. If the notification server is not available, the notification is reported later.
+
 ## Station
 The station is responsible for sending notifications to the notification system.
 
 It can be configured either to send the notification immediately or sends the notification to the database, where it is handled by the server notification system.
+
+The station consists of the client application.
+
+Client application is based on ```notification.py``` scriptt, however, any symlibk to ```notification-<topic>.py``` format is allowed. E.g. ```notification-backup.py``` symlink to ```notification.py``` application is the alias to ```notification.py --topic=backup```.
+
+One way of the topic definition must be provided.
 
 ## Client
 The client script provides easy-to-use interface for the notificartions. It allows you to send the notifications to the server.
@@ -62,7 +70,7 @@ The client script provides easy-to-use interface for the notificartions. It allo
 ```
 notification --help
 
-notification --title='Title of the notification' --text='Text of the notification' --priority=3 -- tags='+1,warning,no_entry'
+notification --topic='camera_update' --title='Camera is out of order' --text='Camera does not response to the server' --priority=4 -- tags='-1,warning,no_entry'
 ```
 
 Text is expected in markdown format: https://docs.ntfy.sh/publish/#markdown-formatting
@@ -71,12 +79,14 @@ Message priority is described here: https://docs.ntfy.sh/publish/#message-priori
 
 List of tags and emojis is available here: https://docs.ntfy.sh/publish/#tags-emojis
 
-If text is not provided, it is not reported.
+- If text is not provided, it is not reported.
 
-The default priority is 3 (medium).
+- If title is not provided, it is not reported.
 
-If no tags are provided, non are reported.
+- The default priority is 3 (medium).
 
-Title is mandatory to be provided.
+- If no tags are provided, non are reported.
+
+- Topic is mandatory to be provided.
 
 
