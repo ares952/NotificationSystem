@@ -31,29 +31,41 @@ def validate_priority(arg_value):
     return int_value
 
 
+def post_notification(config, header):
+    try:
+        text = header.get('Text', '')
+        header.pop('Text', None)
+        topic = header.get('Topic', 'default')
+        header.pop('Topic', None)
+        response = requests.post(config['ntfy']['url']+"/"+topic,
+                                 auth=(config['ntfy']['username'], config['ntfy']['password']),
+                                 data=text.encode('utf-8'),
+                                 headers=header)
+        if response.status_code != 200:
+            print(f"Failed to send notification: {response.status_code} {response.text}", flush=True)
+            return 1
+        else:
+            return 0
+    except Exception as e:
+        print(f"Exception: {e}", flush=True)
+        return 2
+
+
 def send_notification(config, topic, title, text, tags, priority):
     headers = {
         'Title': f"{title}" if title is not None else "",
         'Priority': f"{priority}" if priority is not None else "3",
         'Tags': f"{tags}" if tags is not None else "",
-        "Markdown": "yes"
+        "Markdown": "yes",
+        "Text": text,
+        "Topic": topic
     }
     if config['station']['publish_immediately']:
-        try:
-            # print(f"{text}", flush=True)
-            response = requests.post(config['ntfy']['url']+"/"+topic,
-                                     auth=(config['ntfy']['username'], config['ntfy']['password']),
-                                     data=text.encode('utf-8'),
-                                     headers=headers)
-            if response.status_code != 200:
-                print(f"Failed to send notification: {response.status_code} {response.text}", flush=True)
-            else:
-                pass
-        except Exception as e:
-            print(f"Exception: {e}", flush=True)
+        return post_notification(config, headers)
     else:
         with dbAccess(config['database']) as db:
             db.insert_notification(topic, headers)
+        return 0
 
 
 if __name__ == "__main__":

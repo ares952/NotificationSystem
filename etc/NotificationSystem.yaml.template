@@ -2,8 +2,8 @@ station:
     publish_immediately: true
 
 server:
-    enabled: false
-    fetchinterval: 15
+    config_reload: 4
+    fetch_interval: 15
     min_priority: 1
 
 ntfy:
