@@ -24,7 +24,7 @@ if [[ "$EXEC_NAME" =~ ^notification- ]]; then
 fi
 
 
-VENV_DIR="$SCRIPT_DIR/venv"
+VENV_DIR="$SCRIPT_DIR/../venv"
 if [[ -d "$VENV_DIR" && -f "$VENV_DIR/bin/activate" ]]; then
     # execute in venv
     if [[ "$HAS_TOPIC" == true ]]; then
