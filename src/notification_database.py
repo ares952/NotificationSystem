@@ -5,9 +5,9 @@ import json
 # Module Imports
 try:
     import MySQLdb as mysql
-    print("Using MySQLdb from mysqlclient")
+    # print("Using MySQLdb from mysqlclient")
 except ModuleNotFoundError:
-    print("No mysql module available")
+    # print("No mysql module available")
     sys.exit(1)
 
 

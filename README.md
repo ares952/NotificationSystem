@@ -51,6 +51,16 @@ If the server station is enabled, it will attempt to create the database table a
 
 The purpose of server station and the possibility to report notifications to the server is the reliability. If the notification server is not available, the notification is reported later.
 
+### Installation
+
+In systemd directory:
+- copy template to ```.service``` file e.g. to new name ```notification-server.service```
+- update the path in the new file or alternatively even the path to python virtual environment
+- execute ```sudo systemctl enable --now `pwd`/notification-server.service```
+
+### Uninstallation
+Execute ```sudo systemctl disable notification-server.service```
+
 ## Station
 The station is responsible for sending notifications to the notification system.
 
