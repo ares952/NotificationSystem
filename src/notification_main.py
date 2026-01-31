@@ -3,7 +3,9 @@ import argparse
 import sys
 import os
 import requests
-# import notification_database
+from notification_database import dbAccess
+import string
+import random
 
 
 def attempt_to_get_topic():
@@ -30,13 +32,13 @@ def validate_priority(arg_value):
 
 
 def send_notification(config, topic, title, text, tags, priority):
+    headers = {
+        'Title': f"{title}" if title is not None else "",
+        'Priority': f"{priority}" if priority is not None else "3",
+        'Tags': f"{tags}" if tags is not None else "",
+        "Markdown": "yes"
+    }
     if config['station']['publish_immediately']:
-        headers = {
-            'Title': f"{title}" if title is not None else "",
-            'Priority': f"{priority}" if priority is not None else "3",
-            'Tags': f"{tags}" if tags is not None else "",
-            "Markdown": "yes"
-        }
         try:
             # print(f"{text}", flush=True)
             response = requests.post(config['ntfy']['url']+"/"+topic,
@@ -49,11 +51,31 @@ def send_notification(config, topic, title, text, tags, priority):
                 pass
         except Exception as e:
             print(f"Exception: {e}", flush=True)
+    else:
+        with dbAccess(config['database']) as db:
+            db.insert_notification(topic, headers)
 
 
 if __name__ == "__main__":
+    attempt_to_get_topic()
+    for prio in range(1, 6):
+        validate_priority(prio)
     import notification_config
     config = notification_config.load_config()
     config['station']['publish_immediately'] = False
-    send_notification(config, "testing topic", "testing title", "testing text", "testing,tags", 5)
-    sys.exit(0)
+    random_table_name = ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
+    print(f"Using random table name: {random_table_name}")
+    config['database']['table'] = random_table_name
+    send_notification(config, "testing topic 1", "testing title 1", "testing text 1", "testing1,tag1", 1)
+    send_notification(config, "testing topic 2", "testing title 2", "testing text 2", "testing2,tag2", 2)
+    send_notification(config, "testing topic 3", "testing title 3", "testing text 3", "testing3,tag3", 3)
+    send_notification(config, "testing topic 4", "testing title 4", "testing text 4", "testing4,tag4", 4)
+    send_notification(config, "testing topic 5", "testing title 5", "testing text 5", "testing5,tag5", 5)
+
+    with dbAccess(config['database']) as db:
+        cursor = db.connection.cursor()
+        while (item := db.get_next_notification()) is not None:
+            print(item)
+            db.delete_notification(item[0])
+
+        cursor.execute(f"DROP TABLE {random_table_name};")

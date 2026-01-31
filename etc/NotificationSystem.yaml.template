@@ -15,5 +15,6 @@ database:
     server: "127.0.0.1"
     port: 3306
     database: "notification"
+    table: "notification_testing_table"
     username: "notification_user"
     password: "notification_password"
