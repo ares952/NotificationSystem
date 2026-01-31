@@ -27,7 +27,7 @@ def read_config(path, defaults=None) -> dict:
         with open(path, 'r', encoding='utf-8') as file:
             config = yaml.safe_load(file) or {}
             merged = merge_dicts(defaults, config)
-            print(f"'{path}' configuration was loaded.")
+            # print(f"'{path}' configuration was loaded.")
             return merged
     except FileNotFoundError:
         # print(f"Warning: File '{path}' not found. Using defaults.")

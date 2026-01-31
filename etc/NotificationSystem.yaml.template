@@ -5,6 +5,7 @@ server:
     config_reload: 4
     fetch_interval: 15
     min_priority: 1
+    delay_interval: 0.5
 
 ntfy:
     url: "https://ntfy.example.com"

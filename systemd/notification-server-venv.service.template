@@ -1,0 +1,11 @@
+[Unit]
+Description=Notification server service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/<path to python virtual environment>/venv/bin/python /<path to git repository>/src/notification_server.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
