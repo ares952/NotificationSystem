@@ -211,3 +211,6 @@ etc/NotificationSystem.yaml
 
 #local systemd service files
 systemd/*.service
+
+#local venv environment files
+venv/

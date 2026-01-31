@@ -11,6 +11,15 @@ The configuration file must be placed in one of the following paths:
 
 The files are attempted to be loaded in this particular order. If a file is found, it will be loaded and used. Please note, if more configurations exist, the data will be merged and the lates data are always preffered.
 
+## Python
+Install python virtual environment, source it and install requirements:
+```
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+
 ## Server
 On the server, you need to install and configure NTFY. You can add new user by running the following command:
 ```docker exec -it ntfy ntfy user add <username>```
