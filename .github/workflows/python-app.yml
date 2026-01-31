@@ -61,4 +61,4 @@ jobs:
       run: |
         python3 src/notification_config.py
         python3 src/notification_database.py
-        
+        python3 src/notification_main.py
