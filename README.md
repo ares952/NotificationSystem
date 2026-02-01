@@ -19,6 +19,23 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+In order to install mysql library, you might need some system dependencies have installed:
+
+#### For Debian/Ubuntu:
+```
+sudo apt install python3-dev default-libmysqlclient-dev build-essential pkg-config
+```
+#### For Fedora:
+```
+sudo dnf install python3-devel mysql-devel gcc pkgconfig
+```
+
+#### For Archlinux:
+```
+sudo pacman -S base-devel mariadb-libs pkgconf
+```
+
+
 ## Links
 You can call ```notification``` script directly or over symlinked file with topic inside, e.g.:
 
